@@ -18,12 +18,12 @@ Sistema de inventario para pisos para autos (5D y 8D).
 
 Cada módulo se desarrolla completo (backend → probar con Bruno → frontend → conectar → probar) antes de pasar al siguiente.
 
-| Orden | Módulo | Depende de |
-|-------|--------|------------|
-| 1 | **INVENTARIO** | — |
-| 2 | **BÚSQUEDA** | INVENTARIO |
-| 3 | **MOVIMIENTOS** | INVENTARIO |
-| 4 | **REPORTES** | INVENTARIO + MOVIMIENTOS |
+|nro|      Módulo     | Depende de               |
+|---|-----------------|--------------------------|
+| 1 | **INVENTARIO**  | —                        |
+| 2 | **BÚSQUEDA**    | INVENTARIO               |
+| 3 | **MOVIMIENTOS** | INVENTARIO               |
+| 4 | **REPORTES**    | INVENTARIO + MOVIMIENTOS |
 | 5 | **IMPORTACIÓN** | INVENTARIO + MOVIMIENTOS |
 
 ### Alternativa (quick win visible)

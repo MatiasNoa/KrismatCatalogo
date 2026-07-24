@@ -1,122 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+// ============================================================
+// App.jsx — Componente raíz con enrutamiento
+// ============================================================
+// Configura React Router con todas las rutas del sistema.
+// Las rutas están anidadas dentro de <AppShell /> para que
+// compartan el mismo layout (Header + BottomNav).
+//
+// Módulos:
+//   1. INVENTARIO   → /inventario, /inventario/crear, /inventario/editar/:id
+//   2. BÚSQUEDA     → /                            (próximamente)
+//   3. MOVIMIENTOS  → /movimientos                 (próximamente)
+//   4. REPORTES     → /reportes                    (próximamente)
+//   5. IMPORTACIÓN  → /importacion                 (próximamente)
+// ============================================================
 
-function App() {
-  const [count, setCount] = useState(0)
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AppShell from './components/Layout/AppShell';
+import InventarioPage from './pages/InventarioPage';
+import ProductoFormPage from './pages/ProductoFormPage';
 
+// Estilos globales del sistema (copiados del mockup HTML)
+import './styles/variables.css';   // Tokens de diseño
+import './styles/global.css';      // Reset y estilos base
+import './styles/layout.css';      // App shell, header, bottom nav
+import './styles/components.css';  // Componentes reutilizables
+import './styles/pages.css';       // Estilos específicos por página
+
+export default function App() {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppShell />}>
+          {/* Página principal — BÚSQUEDA (pendiente) */}
+          <Route
+            path="/"
+            element={
+              <div className="page-search__search">
+                <p className="text-muted">Módulo de búsqueda (próximamente)</p>
+              </div>
+            }
+          />
 
-      <div className="ticks"></div>
+          {/* Módulo 1 — INVENTARIO */}
+          <Route path="/inventario" element={<InventarioPage />} />
+          <Route path="/inventario/crear" element={<ProductoFormPage />} />
+          <Route path="/inventario/editar/:id" element={<ProductoFormPage />} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          {/* Módulos pendientes */}
+          <Route
+            path="/movimientos"
+            element={
+              <div className="page-search__search">
+                <p className="text-muted">Módulo de movimientos (próximamente)</p>
+              </div>
+            }
+          />
+          <Route
+            path="/reportes"
+            element={
+              <div className="page-search__search">
+                <p className="text-muted">Módulo de reportes (próximamente)</p>
+              </div>
+            }
+          />
+          <Route
+            path="/importacion"
+            element={
+              <div className="page-search__search">
+                <p className="text-muted">Módulo de importación (próximamente)</p>
+              </div>
+            }
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
-export default App
