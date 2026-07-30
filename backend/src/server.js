@@ -15,6 +15,9 @@ require('dotenv').config();
 
 const pool = require('./db');
 const productosRouter = require('./routes/productos');
+const movimientosRouter = require('./routes/movimientos');
+const reportesRouter = require('./routes/reportes');
+const importacionRouter = require('./routes/importacion');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,7 +31,8 @@ app.use(cors());
 
 // express.json: convierte el body de las peticiones POST/PUT/PATCH
 // de JSON a objeto JavaScript automáticamente
-app.use(express.json());
+// Aumentamos el límite a 10MB para soportar CSVs grandes
+app.use(express.json({ limit: '10mb' }));
 
 // ------------------------------------------------------------
 // Rutas
@@ -57,10 +61,17 @@ app.get('/api/test', async (_req, res) => {
 // Documentación: ver routes/productos.js
 app.use('/api/productos', productosRouter);
 
-// Módulo 2 — BÚSQUEDA   (próximamente)
-// Módulo 3 — MOVIMIENTOS (próximamente)
-// Módulo 4 — REPORTES   (próximamente)
-// Módulo 5 — IMPORTACIÓN (próximamente)
+// Módulo 3 — MOVIMIENTOS
+// Registro de entradas, salidas y ajustes de stock
+app.use('/api/movimientos', movimientosRouter);
+
+// Módulo 4 — REPORTES
+// Consultas de stock, movimientos y resumen
+app.use('/api/reportes', reportesRouter);
+
+// Módulo 5 — IMPORTACIÓN
+// Preview y confirmación de importación CSV
+app.use('/api/importacion', importacionRouter);
 
 // ------------------------------------------------------------
 // Inicio del servidor

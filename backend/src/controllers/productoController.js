@@ -20,7 +20,11 @@ const pool = require('../db');
 // ============================================================
 async function listar(req, res) {
   const { marca, modelo, tipo, estado } = req.query;
-  let sql = 'SELECT * FROM producto WHERE 1=1';
+  let sql = `SELECT producto.*,
+                    (SELECT COUNT(*) FROM compatibilidad
+                     WHERE compatibilidad.producto_id = producto.id_producto)
+                    AS compat_count
+             FROM producto WHERE 1=1`;
   const params = [];
 
   if (marca) {
@@ -62,7 +66,11 @@ async function buscar(req, res) {
 
   try {
     const result = await pool.query(
-      `SELECT * FROM producto
+      `SELECT producto.*,
+              (SELECT COUNT(*) FROM compatibilidad
+               WHERE compatibilidad.producto_id = producto.id_producto)
+              AS compat_count
+       FROM producto
        WHERE (marca ILIKE $1 OR modelo ILIKE $1)
        ORDER BY marca, modelo`,
       [`%${q.trim()}%`]
@@ -114,10 +122,10 @@ async function obtener(req, res) {
 // ============================================================
 // crear
 // POST /api/productos
-// Body: { marca, modelo, anio, tipo, ubicacion?, observaciones? }
+// Body: { marca, modelo, anio, tipo, proveedor?, ubicacion?, observaciones? }
 // ============================================================
 async function crear(req, res) {
-  const { marca, modelo, anio, tipo, ubicacion, observaciones } = req.body;
+  const { marca, modelo, anio, tipo, proveedor, ubicacion, observaciones } = req.body;
 
   if (!marca || !modelo || !anio || !tipo) {
     return res.status(400).json({
@@ -131,10 +139,10 @@ async function crear(req, res) {
 
   try {
     const result = await pool.query(
-      `INSERT INTO producto (marca, modelo, anio, tipo, ubicacion, observaciones)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO producto (marca, modelo, anio, tipo, proveedor, ubicacion, observaciones)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
-      [marca, modelo, anio, tipo, ubicacion || null, observaciones || null]
+      [marca, modelo, anio, tipo, proveedor || null, ubicacion || null, observaciones || null]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -146,12 +154,12 @@ async function crear(req, res) {
 // ============================================================
 // actualizar
 // PUT /api/productos/:id
-// Body: { marca?, modelo?, anio?, tipo?, ubicacion?, observaciones?, estado? }
+// Body: { marca?, modelo?, anio?, tipo?, proveedor?, ubicacion?, observaciones?, estado? }
 // COALESCE: mantiene el valor actual si el campo no se envía
 // ============================================================
 async function actualizar(req, res) {
   const { id } = req.params;
-  const { marca, modelo, anio, tipo, ubicacion, observaciones, estado } =
+  const { marca, modelo, anio, tipo, proveedor, ubicacion, observaciones, estado } =
     req.body;
 
   try {
@@ -161,12 +169,13 @@ async function actualizar(req, res) {
            modelo = COALESCE($2, modelo),
            anio = COALESCE($3, anio),
            tipo = COALESCE($4, tipo),
-           ubicacion = COALESCE($5, ubicacion),
-           observaciones = COALESCE($6, observaciones),
-           estado = COALESCE($7, estado)
-       WHERE id_producto = $8
+           proveedor = COALESCE($5, proveedor),
+           ubicacion = COALESCE($6, ubicacion),
+           observaciones = COALESCE($7, observaciones),
+           estado = COALESCE($8, estado)
+       WHERE id_producto = $9
        RETURNING *`,
-      [marca, modelo, anio, tipo, ubicacion, observaciones, estado, id]
+      [marca, modelo, anio, tipo, proveedor, ubicacion, observaciones, estado, id]
     );
 
     if (result.rows.length === 0) {

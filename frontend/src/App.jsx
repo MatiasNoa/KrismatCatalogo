@@ -17,6 +17,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppShell from './components/Layout/AppShell';
 import InventarioPage from './pages/InventarioPage';
 import ProductoFormPage from './pages/ProductoFormPage';
+import BuscarPage from './pages/BuscarPage';
+import MovimientosPage from './pages/MovimientosPage';
+import MovimientoFormPage from './pages/MovimientoFormPage';
+import ReportesPage from './pages/ReportesPage';
+import ImportacionPage from './pages/ImportacionPage';
 
 // Estilos globales del sistema (copiados del mockup HTML)
 import './styles/variables.css';   // Tokens de diseño
@@ -30,46 +35,22 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<AppShell />}>
-          {/* Página principal — BÚSQUEDA (pendiente) */}
-          <Route
-            path="/"
-            element={
-              <div className="page-search__search">
-                <p className="text-muted">Módulo de búsqueda (próximamente)</p>
-              </div>
-            }
-          />
+          {/* Módulo 2 — BÚSQUEDA (página principal) */}
+          <Route path="/" element={<BuscarPage />} />
 
           {/* Módulo 1 — INVENTARIO */}
           <Route path="/inventario" element={<InventarioPage />} />
           <Route path="/inventario/crear" element={<ProductoFormPage />} />
           <Route path="/inventario/editar/:id" element={<ProductoFormPage />} />
 
-          {/* Módulos pendientes */}
-          <Route
-            path="/movimientos"
-            element={
-              <div className="page-search__search">
-                <p className="text-muted">Módulo de movimientos (próximamente)</p>
-              </div>
-            }
-          />
-          <Route
-            path="/reportes"
-            element={
-              <div className="page-search__search">
-                <p className="text-muted">Módulo de reportes (próximamente)</p>
-              </div>
-            }
-          />
-          <Route
-            path="/importacion"
-            element={
-              <div className="page-search__search">
-                <p className="text-muted">Módulo de importación (próximamente)</p>
-              </div>
-            }
-          />
+          {/* Módulo 3 — MOVIMIENTOS */}
+          <Route path="/movimientos" element={<MovimientosPage />} />
+          <Route path="/movimientos/crear" element={<MovimientoFormPage />} />
+          {/* Módulo 4 — REPORTES */}
+          <Route path="/reportes" element={<ReportesPage />} />
+
+          {/* Módulo 5 — IMPORTACIÓN */}
+          <Route path="/importacion" element={<ImportacionPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

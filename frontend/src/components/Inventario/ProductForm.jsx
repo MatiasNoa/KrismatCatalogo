@@ -28,6 +28,7 @@ export default function ProductForm({ producto, onSave }) {
   // Estado del formulario
   const [form, setForm] = useState({
     marca: producto?.marca || '',
+    proveedor: producto?.proveedor || '',
     modelo: producto?.modelo || '',
     anio: producto?.anio || '',
     tipo: producto?.tipo || '',
@@ -121,6 +122,22 @@ export default function ProductForm({ producto, onSave }) {
           name="marca"
           placeholder="Ej: Toyota"
           value={form.marca}
+          onChange={handleChange}
+        />
+      </div>
+
+      {/* Proveedor */}
+      <div className="form-group">
+        <label className="form-label" htmlFor="proveedor">
+          Proveedor
+        </label>
+        <input
+          type="text"
+          className="form-input"
+          id="proveedor"
+          name="proveedor"
+          placeholder="Ej: Importaciones XYZ"
+          value={form.proveedor}
           onChange={handleChange}
         />
       </div>

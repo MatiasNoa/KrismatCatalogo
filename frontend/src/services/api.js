@@ -36,6 +36,43 @@ async function request(url, options = {}) {
 }
 
 // ------------------------------------------------------------
+// movimientosApi — funciones para el módulo MOVIMIENTOS
+// ------------------------------------------------------------
+export const movimientosApi = {
+  listar: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/movimientos${qs ? `?${qs}` : ''}`);
+  },
+  obtener: (id) => request(`/movimientos/${id}`),
+  crear: (data) =>
+    request('/movimientos', { method: 'POST', body: JSON.stringify(data) }),
+  eliminar: (id) => request(`/movimientos/${id}`, { method: 'DELETE' }),
+};
+
+// ------------------------------------------------------------
+// reportesApi — funciones para el módulo REPORTES
+// ------------------------------------------------------------
+export const reportesApi = {
+  resumen: () => request('/reportes/resumen'),
+  stock: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/reportes/stock${qs ? `?${qs}` : ''}`);
+  },
+  movimientos: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/reportes/movimientos${qs ? `?${qs}` : ''}`);
+  },
+};
+
+// ------------------------------------------------------------
+// importacionApi — funciones para el módulo IMPORTACIÓN
+// ------------------------------------------------------------
+export const importacionApi = {
+  preview: (csv) => request('/importacion/preview', { method: 'POST', body: JSON.stringify({ csv }) }),
+  confirm: (csv) => request('/importacion/confirm', { method: 'POST', body: JSON.stringify({ csv }) }),
+};
+
+// ------------------------------------------------------------
 // productosApi — funciones para el módulo INVENTARIO
 // ------------------------------------------------------------
 export const productosApi = {
